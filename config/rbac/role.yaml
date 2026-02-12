@@ -1,0 +1,39 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pod-cleanup-operator-manager-role
+  labels:
+    app.kubernetes.io/name: pod-cleanup-operator
+    app.kubernetes.io/component: controller
+rules:
+  # PodCleanupPolicy management
+  - apiGroups: ["cleanup.k8s.io"]
+    resources: ["podcleanuppolicies"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["cleanup.k8s.io"]
+    resources: ["podcleanuppolicies/status"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: ["cleanup.k8s.io"]
+    resources: ["podcleanuppolicies/finalizers"]
+    verbs: ["update"]
+
+  # Pod cleanup
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch", "delete"]
+
+  # Namespace listing for namespaceSelector
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "list", "watch"]
+
+  # Leader election
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+  # Events
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]

@@ -1,0 +1,200 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: podcleanuppolicies.cleanup.k8s.io
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.14.0
+spec:
+  group: cleanup.k8s.io
+  names:
+    kind: PodCleanupPolicy
+    listKind: PodCleanupPolicyList
+    plural: podcleanuppolicies
+    singular: podcleanuppolicy
+    shortNames:
+      - pcp
+  scope: Cluster
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: Schedule
+          type: string
+          jsonPath: .spec.schedule
+        - name: DryRun
+          type: boolean
+          jsonPath: .spec.dryRun
+        - name: LastRun
+          type: string
+          jsonPath: .status.lastRunTime
+        - name: PodsDeleted
+          type: integer
+          jsonPath: .status.podsDeleted
+      schema:
+        openAPIV3Schema:
+          description: PodCleanupPolicy defines rules for automatically cleaning up
+            pods based on their state and age.
+          type: object
+          properties:
+            apiVersion:
+              description: APIVersion defines the versioned schema of this representation
+                of an object.
+              type: string
+            kind:
+              description: Kind is a string value representing the REST resource
+                this object represents.
+              type: string
+            metadata:
+              type: object
+            spec:
+              description: PodCleanupPolicySpec defines the desired state of PodCleanupPolicy.
+              type: object
+              properties:
+                schedule:
+                  description: Schedule is a cron expression for when to run cleanup
+                    (e.g., "*/5 * * * *"). If not set, cleanup runs on every reconcile.
+                  type: string
+                namespaceSelector:
+                  description: NamespaceSelector selects namespaces to scan for pods.
+                    If not set, all namespaces are scanned.
+                  type: object
+                  properties:
+                    matchExpressions:
+                      description: matchExpressions is a list of label selector requirements.
+                      type: array
+                      items:
+                        description: A label selector requirement is a selector that
+                          contains values, a key, and an operator.
+                        type: object
+                        required:
+                          - key
+                          - operator
+                        properties:
+                          key:
+                            type: string
+                          operator:
+                            type: string
+                          values:
+                            type: array
+                            items:
+                              type: string
+                    matchLabels:
+                      description: matchLabels is a map of {key,value} pairs.
+                      type: object
+                      additionalProperties:
+                        type: string
+                  x-kubernetes-map-type: atomic
+                podSelector:
+                  description: PodSelector selects pods to consider for cleanup. If
+                    not set, all pods in target namespaces are considered.
+                  type: object
+                  properties:
+                    matchExpressions:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - key
+                          - operator
+                        properties:
+                          key:
+                            type: string
+                          operator:
+                            type: string
+                          values:
+                            type: array
+                            items:
+                              type: string
+                    matchLabels:
+                      type: object
+                      additionalProperties:
+                        type: string
+                  x-kubernetes-map-type: atomic
+                podStatuses:
+                  description: PodStatuses is a list of pod phases eligible for cleanup
+                    (e.g., Failed, Succeeded). If not set, all phases are eligible.
+                  type: array
+                  items:
+                    description: PodPhase is a label for the condition of a pod at
+                      the current time.
+                    type: string
+                maxAge:
+                  description: MaxAge is the maximum age of pods to retain (e.g.,
+                    "24h", "1h30m"). Pods older than this are deleted.
+                  type: string
+                dryRun:
+                  description: DryRun if true, the operator logs what it would delete
+                    without actually deleting.
+                  type: boolean
+            status:
+              description: PodCleanupPolicyStatus defines the observed state of PodCleanupPolicy.
+              type: object
+              properties:
+                lastRunTime:
+                  description: LastRunTime is the timestamp of the last cleanup run.
+                  type: string
+                  format: date-time
+                podsDeleted:
+                  description: PodsDeleted is the cumulative number of pods deleted
+                    by this policy.
+                  type: integer
+                  format: int64
+                lastRunPodsDeleted:
+                  description: LastRunPodsDeleted is the number of pods deleted in
+                    the last run.
+                  type: integer
+                  format: int32
+                conditions:
+                  description: Conditions represents the latest available observations
+                    of the policy's current state.
+                  type: array
+                  items:
+                    description: Condition contains details for one aspect of the
+                      current state of this API Resource.
+                    type: object
+                    required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type
+                    properties:
+                      lastTransitionTime:
+                        description: lastTransitionTime is the last time the condition
+                          transitioned from one status to another.
+                        type: string
+                        format: date-time
+                      message:
+                        description: message is a human readable message indicating
+                          details about the transition.
+                        type: string
+                        maxLength: 32768
+                      observedGeneration:
+                        description: observedGeneration represents the .metadata.generation
+                          that the condition was set based upon.
+                        type: integer
+                        format: int64
+                        minimum: 0
+                      reason:
+                        description: reason contains a programmatic identifier indicating
+                          the reason for the condition's last transition.
+                        type: string
+                        maxLength: 1024
+                        minLength: 1
+                        pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      status:
+                        description: status of the condition, one of True, False, Unknown.
+                        type: string
+                        enum:
+                          - "True"
+                          - "False"
+                          - Unknown
+                      type:
+                        description: type of condition in CamelCase.
+                        type: string
+                        maxLength: 316
+                        pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
