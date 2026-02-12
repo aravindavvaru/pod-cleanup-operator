@@ -67,19 +67,19 @@ endif
 
 .PHONY: install
 install: ## Install CRDs into the K8s cluster specified in ~/.kube/config.
-	kubectl apply -f config/crd/bases/
+	kubectl apply -k config/crd/bases/
 
 .PHONY: uninstall
 uninstall: ## Uninstall CRDs from the K8s cluster.
-	kubectl delete --ignore-not-found=$(ignore-not-found) -f config/crd/bases/
+	kubectl delete --ignore-not-found=$(ignore-not-found) -k config/crd/bases/
 
 .PHONY: deploy
 deploy: ## Deploy controller to the K8s cluster specified in ~/.kube/config.
-	kubectl apply -k config/default/
+	kubectl apply -k config/
 
 .PHONY: undeploy
 undeploy: ## Undeploy controller from the K8s cluster.
-	kubectl delete --ignore-not-found=$(ignore-not-found) -k config/default/
+	kubectl delete --ignore-not-found=$(ignore-not-found) -k config/
 
 .PHONY: sample
 sample: ## Apply the sample PodCleanupPolicy to the cluster.
