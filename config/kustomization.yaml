@@ -3,8 +3,6 @@ kind: Kustomization
 
 namespace: pod-cleanup-operator-system
 
-namePrefix: pod-cleanup-operator-
-
 resources:
   - crd/bases
   - rbac/service_account.yaml

@@ -31,7 +31,7 @@ spec:
         runAsNonRoot: true
       containers:
         - name: manager
-          image: pod-cleanup-operator:latest
+          image: aravindavvaru/pod-cleanup-operator:latest
           imagePullPolicy: IfNotPresent
           command:
             - /manager

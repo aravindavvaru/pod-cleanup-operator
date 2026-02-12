@@ -75,6 +75,7 @@ uninstall: ## Uninstall CRDs from the K8s cluster.
 
 .PHONY: deploy
 deploy: ## Deploy controller to the K8s cluster specified in ~/.kube/config.
+	sed -i.bak "s|image: .*pod-cleanup-operator.*|image: ${IMG}|" config/manager/manager.yaml && rm -f config/manager/manager.yaml.bak
 	kubectl apply -k config/
 
 .PHONY: undeploy
