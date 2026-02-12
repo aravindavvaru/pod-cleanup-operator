@@ -2,7 +2,7 @@
 # Clean up Failed and Succeeded pods older than 1 hour across all namespaces,
 # running every 15 minutes. Dry-run is enabled so nothing is actually deleted
 # until you are confident the selector is correct.
-apiVersion: cleanup.k8s.io/v1
+apiVersion: cleanup.example.com/v1
 kind: PodCleanupPolicy
 metadata:
   name: cleanup-failed-succeeded-pods
@@ -19,7 +19,7 @@ spec:
   dryRun: true
 ---
 # Aggressively clean up all Failed pods in staging namespaces every 5 minutes.
-apiVersion: cleanup.k8s.io/v1
+apiVersion: cleanup.example.com/v1
 kind: PodCleanupPolicy
 metadata:
   name: cleanup-staging-failed-pods

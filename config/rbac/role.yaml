@@ -8,13 +8,13 @@ metadata:
     app.kubernetes.io/component: controller
 rules:
   # PodCleanupPolicy management
-  - apiGroups: ["cleanup.k8s.io"]
+  - apiGroups: ["cleanup.example.com"]
     resources: ["podcleanuppolicies"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: ["cleanup.k8s.io"]
+  - apiGroups: ["cleanup.example.com"]
     resources: ["podcleanuppolicies/status"]
     verbs: ["get", "update", "patch"]
-  - apiGroups: ["cleanup.k8s.io"]
+  - apiGroups: ["cleanup.example.com"]
     resources: ["podcleanuppolicies/finalizers"]
     verbs: ["update"]
 

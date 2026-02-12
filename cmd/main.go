@@ -56,7 +56,7 @@ func main() {
 		},
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
-		LeaderElectionID:       "pod-cleanup-operator.cleanup.k8s.io",
+		LeaderElectionID:       "pod-cleanup-operator.cleanup.example.com",
 	})
 	if err != nil {
 		setupLog.Error(err, "Unable to start manager")

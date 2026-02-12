@@ -24,9 +24,9 @@ type PodCleanupPolicyReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=cleanup.k8s.io,resources=podcleanuppolicies,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=cleanup.k8s.io,resources=podcleanuppolicies/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=cleanup.k8s.io,resources=podcleanuppolicies/finalizers,verbs=update
+//+kubebuilder:rbac:groups=cleanup.example.com,resources=podcleanuppolicies,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=cleanup.example.com,resources=podcleanuppolicies/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=cleanup.example.com,resources=podcleanuppolicies/finalizers,verbs=update
 //+kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch;delete
 //+kubebuilder:rbac:groups="",resources=namespaces,verbs=get;list;watch
 

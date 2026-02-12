@@ -1,6 +1,6 @@
 // Package v1 contains API Schema definitions for the cleanup v1 API group
 // +kubebuilder:object:generate=true
-// +groupName=cleanup.k8s.io
+// +groupName=cleanup.example.com
 package v1
 
 import (
@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	GroupVersion  = schema.GroupVersion{Group: "cleanup.k8s.io", Version: "v1"}
+	GroupVersion  = schema.GroupVersion{Group: "cleanup.example.com", Version: "v1"}
 	SchemeBuilder = &scheme.Builder{GroupVersion: GroupVersion}
 	AddToScheme   = SchemeBuilder.AddToScheme
 )
